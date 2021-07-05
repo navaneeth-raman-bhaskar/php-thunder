@@ -2,6 +2,7 @@
 
 
 use App\Application;
+use App\Controllers\FormController;
 
 require_once '../vendor/autoload.php';
 session_start();
