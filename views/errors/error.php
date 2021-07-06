@@ -1,9 +1,9 @@
 @layout('app')
 @title
-404
+Error
 @endtitle
 @content
 <h6 class="container text-center mt-5 text-danger">
-    404 | Page Not Found
+    Error! | <?=$message?>
 </h6>
 @endcontent
