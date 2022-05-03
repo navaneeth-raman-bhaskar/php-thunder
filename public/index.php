@@ -1,25 +1,23 @@
 <?php
+declare(strict_types=1);
 
+/**@var $app App\Application */
+define('APP_ROOT', dirname(__DIR__));
 
-use App\Application;
+$app = require_once APP_ROOT . '/bootstrap/app.php';
 
-require_once '../vendor/autoload.php';
-session_start();
+$router = require_once APP_ROOT . '/routes/web.php';
 
-/*set_exception_handler(
-    function (\Throwable $exception) {
-        var_dump('global exception-:<br>'.$exception->getMessage());
-    }
-);*/
+$app->handle(
+    $router,
+    new App\Request()
+);
 
-$app = Application::make();
-$app->router->register(
-    'get',
-    '/',
-    function () {
-        echo App\View::make('welcome');
-    }
-)->view('intro','welcome');
+$config = require_once APP_ROOT . '/config/database.php';
+
+$app->setConfig(
+    $config
+);
 
 $app->run();
 

@@ -8,38 +8,63 @@ use App\Exceptions\RouteNotFoundException;
 
 class Application
 {
+    private static ?Application $instance = null;
+    private Router $router;
+    private Request $request;
+    private array $config;
 
-    public const ROOT = __DIR__.'/..';
-    public const STORAGE_PATH = __DIR__.'/../storage';
-    public const VIEW_PATH = __DIR__.'/../views';
-    public const UPLOAD_PATH = __DIR__.'/../storage/uploads';
-
-    public Router $router;
-    public Request $request;
-
-    public function __construct()
+    private function __construct()
     {
-        $this->request = new Request();
-        $this->router = new Router($this->request);
     }
 
-    public static function make(): self
+    public static function instance(): static
     {
-        return new self();
+        if (!static::$instance) {
+            static::$instance = new static();
+        }
+        return static::$instance;
     }
 
+    public function handle(Router $router, Request $request): static
+    {
+        $this->router = $router;
+        $this->request = $request;
+        return $this;
+    }
+
+    public function setConfig(array $config): static
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    public function getConfig(string $key): ?array
+    {
+        return $this->config[$key] ?? null;
+    }
+
+    public function getEnv(string $key): ?string
+    {
+        return $this->request->env($key);
+    }
+
+    public function db(): \PDO
+    {
+      return  DB::instance($this->getConfig(env('DB_CONNECTION')), null);
+    }
 
     public function run()
     {
         try {
-            echo $this->router->resolve();
+            echo $this->router->resolve($this->request);
         } catch (RouteNotFoundException $e) {
             Response::make()
                 ->setCode(404)
                 ->setMessage('Given Route Not Found')
                 ->buildHeader();
 
-            echo View::make('errors/404');
+            echo View::make('errors/error')->with(['message' => $e->getMessage()]);
         } catch (Exceptions\MethodNotFoundException | Exceptions\ResolveRouteException | Exceptions\ViewNotFoundException $e) {
             Response::make()->setResponseCode(405);
             echo View::make('errors/error')->with(['message' => $e->getMessage()]);

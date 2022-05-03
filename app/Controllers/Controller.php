@@ -4,6 +4,10 @@
 namespace App\Controllers;
 
 
-class Controller
+use App\HasJsonResponse;
+
+abstract class Controller
 {
+    use HasJsonResponse;
+
 }

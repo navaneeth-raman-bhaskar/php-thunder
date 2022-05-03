@@ -10,9 +10,9 @@ class Collection implements \IteratorAggregate
     {
     }
 
-    public static function make(array $array): self
+    public static function make(array $array): static
     {
-        return new self($array);
+        return new static($array);
     }
 
 

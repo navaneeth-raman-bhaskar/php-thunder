@@ -6,38 +6,80 @@ namespace App;
 
 class Request
 {
+    use FactoryMethod;
+
+    private array $get;
+    private array $post;
+    private array $files;
+    private array $server;
+    private array $env;
 
     public function __construct()
     {
+        $this->get = $_GET;
+        $this->post = $_POST;
+        $this->files = $_FILES;
+        $this->server = $_SERVER;
+        $this->env = $_ENV;
     }
 
-    public static function make(): self
+    public function input(string $key): ?string
     {
-        return new self();
+        return $this->post($key) ?? $this->get($key) ?? $this->file($key);
+    }
+
+    public function get(string $key): ?string
+    {
+        return $this->get[$key] ?? null;
+    }
+
+    public function post(string $key): ?string
+    {
+        return $this->post[$key] ?? null;
+    }
+
+    public function file(string $key): ?string
+    {
+        return $this->files[$key] ?? null;
+    }
+
+    public function server(string $key): ?string
+    {
+        return $this->server[$key] ?? null;
+    }
+
+    public function env(string $key): ?string
+    {
+        return $this->env[$key] ?? null;
     }
 
     public function path(): string
     {
-        return explode('?', $_SERVER['REQUEST_URI'])[0];
+        return explode('?', $this->uri())[0];
     }
 
     public function uri(): string
     {
-        return $_SERVER['REQUEST_URI'];
+        return $this->server('REQUEST_URI');
     }
 
     public function method(): string
     {
-        return strtolower($_SERVER['REQUEST_METHOD']);
+        return strtolower($this->post('__method') ?? $this->server('REQUEST_METHOD'));
+    }
+
+    public function is(string $method): bool
+    {
+        return $this->method() === strtolower($method);
     }
 
     public function isGet(): bool
     {
-        return $this->method() === 'get';
+        return $this->is('get');
     }
 
     public function isPost(): bool
     {
-        return $this->method() === 'post';
+        return $this->is('post');
     }
 }

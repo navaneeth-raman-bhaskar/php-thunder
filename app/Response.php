@@ -6,23 +6,26 @@ namespace App;
 
 class Response
 {
+    use FactoryMethod;
 
     private string $version;
     private string $message;
     private int $code;
+    private array $data;
 
     public function __construct()
     {
     }
 
-    public static function make(): self
-    {
-        return new self();
-    }
-
     public function setCode(int $code): self
     {
         $this->code = $code;
+        return $this;
+    }
+
+    public function setData(array $data): self
+    {
+        $this->data = $data;
         return $this;
     }
 
@@ -43,13 +46,19 @@ class Response
         return $this;
     }
 
-    public function setHeader(string $header): void
+    public function setHeader(string $header): self
     {
         header($header);
+        return $this;
     }
 
     public function buildHeader(): void
     {
-        header($this->version ?? 'HTTP/1.1'.' '.$this->code.' '.$this->message);
+        header($this->version ?? 'HTTP/1.1' . ' ' . $this->code . ' ' . $this->message);
+    }
+
+    public function __toString(): string
+    {
+        return json_encode($this->data);
     }
 }

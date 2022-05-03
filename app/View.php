@@ -28,7 +28,7 @@ class View
      */
     public function render(): string
     {
-        $_viewPath = Application::VIEW_PATH.'/'.$this->view.'.php';
+        $_viewPath = view_path($this->view . '.php');
         if (!file_exists($_viewPath)) {
             throw new ViewNotFoundException();
         }
@@ -47,7 +47,7 @@ class View
             $title = $this->get_string_between($view, '@title', '@endtitle');
             $content = $this->get_string_between($view, '@content', '@endcontent');
             ob_start();
-            include Application::VIEW_PATH.'/layout/'.$path.'.php';;
+            include view_path('layout/' . $path . '.php');
             $layout = ob_get_clean();
             $layout = str_replace('{{content}}', $content, $layout);
             $layout = str_replace('{{title}}', $title, $layout);
@@ -65,7 +65,7 @@ class View
 
     private function get_string_between($string, $start, $end): string
     {
-        $string = ' '.$string;
+        $string = ' ' . $string;
         $ini = strpos($string, $start);
         if ($ini == 0) {
             return '';
