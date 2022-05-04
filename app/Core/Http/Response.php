@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Core;
+namespace App\Core\Http;
 
 
 use App\Core\Traits\FactoryMethod;
@@ -62,5 +62,10 @@ class Response
     public function __toString(): string
     {
         return json_encode($this->data);
+    }
+
+    public function redirect(string $url): static
+    {
+        return $this->setHeader("Location: $url");
     }
 }

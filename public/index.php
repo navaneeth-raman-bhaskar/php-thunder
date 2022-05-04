@@ -10,7 +10,7 @@ $router = require_once APP_ROOT . '/routes/web.php';
 
 $app->handle(
     $router,
-    new App\Core\Request()
+    new App\Core\Http\Request()
 );
 
 $config = require_once APP_ROOT . '/config/database.php';

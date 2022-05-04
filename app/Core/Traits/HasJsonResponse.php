@@ -4,7 +4,7 @@
 namespace App\Core\Traits;
 
 
-use App\Core\Response;
+use App\Core\Http\Response;
 
 trait HasJsonResponse
 {

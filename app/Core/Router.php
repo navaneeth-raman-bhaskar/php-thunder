@@ -6,6 +6,7 @@ use App\Core\Exceptions\MethodNotFoundException;
 use App\Core\Exceptions\ResolveRouteException;
 use App\Core\Exceptions\RouteNotFoundException;
 use App\Core\Exceptions\ViewNotFoundException;
+use App\Core\Http\Request;
 use App\Core\Traits\FactoryMethod;
 
 class Router

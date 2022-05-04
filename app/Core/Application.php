@@ -5,6 +5,8 @@ namespace App\Core;
 
 
 use App\Core\Exceptions\RouteNotFoundException;
+use App\Core\Http\Request;
+use App\Core\Http\Response;
 
 class Application
 {

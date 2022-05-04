@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Core;
+namespace App\Core\Http;
 
 
 use App\Core\Traits\FactoryMethod;
