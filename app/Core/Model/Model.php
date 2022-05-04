@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Core\Model;
 
 
-use App\Application;
-use App\FactoryMethod;
+use App\Core\Application;
+use App\Core\Traits\FactoryMethod;
 use PDO;
 
 abstract class Model

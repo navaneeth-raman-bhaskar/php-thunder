@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App;
+namespace App\Core;
 
 
-use App\Exceptions\ViewNotFoundException;
+use App\Core\Exceptions\ViewNotFoundException;
 
 class View
 {

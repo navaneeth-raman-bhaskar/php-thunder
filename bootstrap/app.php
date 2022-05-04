@@ -1,6 +1,6 @@
 <?php
 
-use App\Application;
+use App\Core\Application;
 
 session_start();
 

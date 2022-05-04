@@ -1,8 +1,10 @@
 <?php
 
 
-namespace App;
+namespace App\Core\Traits;
 
+
+use App\Core\Response;
 
 trait HasJsonResponse
 {

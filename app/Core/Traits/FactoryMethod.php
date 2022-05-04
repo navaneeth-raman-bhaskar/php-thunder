@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace App\Core\Traits;
 
 
 trait FactoryMethod

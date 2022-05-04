@@ -1,8 +1,10 @@
 <?php
 
 
-namespace App;
+namespace App\Core;
 
+
+use App\Core\Traits\FactoryMethod;
 
 class Request
 {

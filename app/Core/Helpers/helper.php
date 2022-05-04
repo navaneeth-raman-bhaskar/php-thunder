@@ -22,7 +22,7 @@ function upload_path(string $path = ''): string
 
 function env($key, $default = null)
 {
-    return \App\Application::instance()->getEnv($key) ?? $default;
+    return \App\Core\Application::instance()->getEnv($key) ?? $default;
 }
 
 function dd(...$params)

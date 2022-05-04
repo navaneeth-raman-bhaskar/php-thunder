@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App;
+namespace App\Core;
 
 
-use App\Exceptions\RouteNotFoundException;
+use App\Core\Exceptions\RouteNotFoundException;
 
 class Application
 {

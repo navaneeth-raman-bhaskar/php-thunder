@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Exceptions;
+namespace App\Core\Exceptions;
 
 
 class ResolveRouteException extends \Exception

@@ -1,11 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Core;
 
-use App\Exceptions\MethodNotFoundException;
-use App\Exceptions\ResolveRouteException;
-use App\Exceptions\RouteNotFoundException;
-use App\Exceptions\ViewNotFoundException;
+use App\Core\Exceptions\MethodNotFoundException;
+use App\Core\Exceptions\ResolveRouteException;
+use App\Core\Exceptions\RouteNotFoundException;
+use App\Core\Exceptions\ViewNotFoundException;
+use App\Core\Traits\FactoryMethod;
 
 class Router
 {
