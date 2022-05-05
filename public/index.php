@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**@var $app App\Core\Application */
 define('APP_ROOT', dirname(__DIR__));
@@ -13,11 +12,6 @@ $app->handle(
     new App\Core\Http\Request()
 );
 
-$config = require_once APP_ROOT . '/config/database.php';
-
-$app->setConfig(
-    $config
-);
 
 $app->run();
 

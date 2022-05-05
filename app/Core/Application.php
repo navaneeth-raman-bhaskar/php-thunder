@@ -7,16 +7,20 @@ namespace App\Core;
 use App\Core\Exceptions\RouteNotFoundException;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
+use DirectoryIterator;
 
 class Application
 {
     private static ?Application $instance = null;
     private Router $router;
     private Request $request;
-    private array $config;
+    private array $config = [];
+    private array $env;
 
     private function __construct()
     {
+        $this->env = $_ENV;
+
     }
 
     public static function instance(): static
@@ -34,9 +38,13 @@ class Application
         return $this;
     }
 
-    public function setConfig(array $config): static
+    public function setConfig(string $configPath): static
     {
-        $this->config = $config;
+        foreach (new DirectoryIterator($configPath) as $fileInfo) {
+            if ($fileInfo->isDot()) continue;
+            $config = require_once $fileInfo->getPathName();
+            $this->config = array_merge($this->config, $config);
+        }
 
         return $this;
     }
@@ -48,12 +56,12 @@ class Application
 
     public function getEnv(string $key): ?string
     {
-        return $this->request->env($key);
+        return $this->env[$key] ?? null;
     }
 
     public function db(): \PDO
     {
-      return  DB::instance($this->getConfig(env('DB_CONNECTION')), null);
+        return DB::instance($this->getConfig('default_connection'));
     }
 
     public function run()

@@ -10,7 +10,7 @@ class DB
 {
     private static ?PDO $instance = null;
 
-    private function __construct(array $config, ?array $options = null)
+    private function __construct(array $config)
     {
         try {
             $defaultOptions = [
@@ -22,17 +22,17 @@ class DB
                 $config['dns'],
                 $config['username'],
                 $config['password'],
-                $options ?? $defaultOptions
+                $config['options'] ?? $defaultOptions
             );
         } catch (PDOException $e) {
             return View::make('errors/error')->with(['message' => $e->getMessage()]);
         }
     }
 
-    public static function instance(array $config, ?array $options = null): PDO
+    public static function instance(array $config): PDO
     {
         if (!static::$instance) {
-            new static($config, $options);
+            new static($config);
         }
         return static::$instance;
     }

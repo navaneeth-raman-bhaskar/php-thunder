@@ -14,4 +14,10 @@ $dotenv->load();
     }
 );*/
 
-return Application::instance();
+$app = Application::instance();
+
+$app->setConfig(
+    APP_ROOT . '/config'
+);
+
+return $app;

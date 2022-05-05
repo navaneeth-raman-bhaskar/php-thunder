@@ -14,7 +14,6 @@ class Request
     private array $post;
     private array $files;
     private array $server;
-    private array $env;
 
     public function __construct()
     {
@@ -22,7 +21,6 @@ class Request
         $this->post = $_POST;
         $this->files = $_FILES;
         $this->server = $_SERVER;
-        $this->env = $_ENV;
     }
 
     public function input(string $key): ?string
@@ -48,11 +46,6 @@ class Request
     public function server(string $key): ?string
     {
         return $this->server[$key] ?? null;
-    }
-
-    public function env(string $key): ?string
-    {
-        return $this->env[$key] ?? null;
     }
 
     public function path(): string
