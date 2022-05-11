@@ -15,6 +15,10 @@ class Router
 
     private array $routes;
 
+    public function __construct(private Container $container)
+    {
+    }
+
     private function register(string $method, string $route, mixed $action): self
     {
         if ($route !== '' and $route[0] !== '/') {
@@ -25,10 +29,15 @@ class Router
     }
 
     /**
-     * @throws RouteNotFoundException
+     * @param Request $request
+     * @return false|mixed|string
      * @throws MethodNotFoundException
      * @throws ResolveRouteException
+     * @throws RouteNotFoundException
      * @throws ViewNotFoundException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \ReflectionException
      */
     public function resolve(Request $request)
     {
@@ -44,7 +53,7 @@ class Router
             [$controller, $method] = $action; //array destructuring
 
             if (method_exists($controller, $method)) {
-                return call_user_func([new $controller(), $method]);
+                return call_user_func([$this->container->get($controller), $method]);
             }
             throw new MethodNotFoundException();
         }

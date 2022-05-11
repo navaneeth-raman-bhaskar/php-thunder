@@ -18,9 +18,14 @@ class Request
     public function __construct()
     {
         $this->get = $_GET;
-        $this->post = $_POST;
         $this->files = $_FILES;
         $this->server = $_SERVER;
+        $this->setPost();
+    }
+
+    private function setPost()
+    {
+        $this->post = array_merge($_POST, json_decode(file_get_contents('php://input'), true) ?? []);
     }
 
     public function input(string $key): ?string

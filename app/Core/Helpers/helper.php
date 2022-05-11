@@ -22,9 +22,14 @@ function upload_path(string $path = ''): string
     return UPLOAD_PATH . '/' . $path;
 }
 
-function env($key, $default = null)
+function env(string $key, $default = null): ?string
 {
     return app()->getEnv($key) ?? $default;
+}
+
+function config(string $key, $default = null)
+{
+    return app()->getConfig($key) ?? $default;
 }
 
 
@@ -39,7 +44,7 @@ function app(): Application
  */
 function resolve(string $class)
 {
-   return app()::getContainer()->get($class);
+    return app()::getContainer()->get($class);
 }
 
 function dd(...$params)

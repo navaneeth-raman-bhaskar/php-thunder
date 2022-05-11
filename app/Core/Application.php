@@ -7,11 +7,12 @@ namespace App\Core;
 use App\Core\Exceptions\RouteNotFoundException;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
-use DirectoryIterator;
+use FilesystemIterator;
 
 class Application
 {
     private static ?Application $instance = null;
+    private static Container $container;
     private Router $router;
     private Request $request;
     private array $config = [];
@@ -20,7 +21,7 @@ class Application
     private function __construct()
     {
         $this->env = $_ENV;
-
+        static::$container = BindingServiceProvider::make()->register(new Container());
     }
 
     public static function instance(): static
@@ -29,6 +30,11 @@ class Application
             static::$instance = new static();
         }
         return static::$instance;
+    }
+
+    public static function getContainer(): Container
+    {
+        return static::$container;
     }
 
     public function handle(Router $router, Request $request): static
@@ -40,8 +46,8 @@ class Application
 
     public function setConfig(string $configPath): static
     {
-        foreach (new DirectoryIterator($configPath) as $fileInfo) {
-            if ($fileInfo->isDot()) continue;
+        foreach (new FilesystemIterator($configPath) as $fileInfo) {
+            /**@var $fileInfo \SplFileInfo */
             $config = require_once $fileInfo->getPathName();
             $this->config = array_merge($this->config, $config);
         }
@@ -49,7 +55,7 @@ class Application
         return $this;
     }
 
-    public function getConfig(string $key): ?array
+    public function getConfig(string $key)
     {
         return $this->config[$key] ?? null;
     }
@@ -61,7 +67,7 @@ class Application
 
     public function db(): \PDO
     {
-        return DB::instance($this->getConfig('default_connection'));
+        return DB::instance(config(config('default_connection')));
     }
 
     public function run()

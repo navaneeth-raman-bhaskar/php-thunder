@@ -19,12 +19,29 @@ abstract class Model
         $this->db = Application::instance()->db();
     }
 
-    public static function get(): array
+    public static function get($limit=100000): array
     {
         $table = (new static)->table;
         return (new static)->db
-            ->query("select * from $table")
+            ->query("select * from $table limit $limit")
             ->fetchAll(PDO::FETCH_CLASS,static::class);
+    }
+
+    public static function lazy($limit=100000): \Generator
+    {
+        $table = (new static)->table;
+        $query = (new static)->db
+            ->query("select * from $table limit $limit");
+
+       return self::fetchLazy($query);
+    }
+
+
+    private static function fetchLazy(\PDOStatement $query): \Generator
+    {
+        foreach ($query as $record) {
+            yield $record;
+        }
     }
 
 }
