@@ -13,10 +13,11 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Core\\": "core/"
         },
         "files": [
-            "app/Core/Helpers/helper.php"
+            "core/Helpers/helper.php"
         ]
     }
 }
