@@ -21,7 +21,7 @@ class Router
 
     private function register(string $method, string $route, mixed $action): self
     {
-        if ($route !== '' and $route[0] !== '/') {
+        if ($route === '' or $route[0] !== '/') {
             $route = '/' . $route;
         }
         $this->routes[strtolower($method)][$route] = $action;
