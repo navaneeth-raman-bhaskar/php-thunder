@@ -1,8 +1,8 @@
 <?php
 
-/**@var $app Core\Application */
 define('APP_ROOT', dirname(__DIR__));
 
+/**@var $app Core\Application */
 $app = require_once APP_ROOT . '/bootstrap/app.php';
 
 $router = require_once APP_ROOT . '/routes/web.php';

@@ -25,7 +25,10 @@ class Request
 
     private function setPost()
     {
-        $this->post = array_merge($_POST, json_decode(file_get_contents('php://input'), true) ?? []);
+        $this->post = array_merge(
+            $_POST,
+            json_decode(file_get_contents('php://input'), true) ?? []
+        );
     }
 
     public function input(string $key): ?string
@@ -65,7 +68,11 @@ class Request
 
     public function method(): string
     {
-        return strtolower($this->post('__method') ?? $this->server('REQUEST_METHOD'));
+        return strtolower(
+            $this->post('__method') ??
+            $this->server('X-HTTP-METHOD-OVERRIDE') ??
+            $this->server('REQUEST_METHOD')
+        );
     }
 
     public function is(string $method): bool
@@ -81,5 +88,10 @@ class Request
     public function isPost(): bool
     {
         return $this->is('post');
+    }
+
+    public function isXmlHttpRequest(): bool
+    {
+        return 'XMLHttpRequest' === $this->server('X-Requested-With');
     }
 }

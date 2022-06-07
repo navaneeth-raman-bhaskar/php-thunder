@@ -52,7 +52,8 @@ class View
             $layout = str_replace('{{content}}', $content, $layout);
             $layout = str_replace('{{title}}', $title, $layout);
         }
-        return $layout;
+        header('Content-Encoding: gzip');
+        return gzencode($layout);
     }
 
     /**
