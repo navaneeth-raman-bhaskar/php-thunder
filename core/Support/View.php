@@ -28,7 +28,7 @@ class View
      */
     public function render(): string
     {
-        $_viewPath = view_path($this->view . '.php');
+        $_viewPath = view_path($this->view . '.flash.php');
         if (!file_exists($_viewPath)) {
             throw new ViewNotFoundException();
         }
@@ -47,7 +47,7 @@ class View
             $title = $this->get_string_between($view, '@title', '@endtitle');
             $content = $this->get_string_between($view, '@content', '@endcontent');
             ob_start();
-            include view_path('layout/' . $path . '.php');
+            include view_path('layout/' . $path . '.flash.php');
             $layout = ob_get_clean();
             $layout = str_replace('{{content}}', $content, $layout);
             $layout = str_replace('{{title}}', $title, $layout);
