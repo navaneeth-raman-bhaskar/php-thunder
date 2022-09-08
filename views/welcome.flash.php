@@ -46,7 +46,7 @@ Welcome
     }
 
     li:first-child {
-        padding-left: 0rem;
+        padding-left: 0;
     }
 
     @-webkit-keyframes light {
@@ -61,6 +61,15 @@ Welcome
         100% {
             color: #f1c40f;
             text-shadow: 0 0 1rem #d35400, 0 0 7rem #d35400;
+        }
+    }
+
+    @-webkit-keyframes flash {
+        0%,20%,40%,100% {
+            fill: #f1c40f;
+        }
+        10%,30%,50% {
+            fill: #576574;
         }
     }
 
@@ -97,7 +106,17 @@ Welcome
         color: white;
     }
 
+    #flash {
+        width: 30%
+    }
+
+    .flash {
+        animation: flash .5s cubic-bezier(0, 0, 0.54, 1.3) 6;
+        /*animation: flash 1.3s linear infinite;*/
+    }
+
 </style>
+<audio id="thunder" src="/thunder.wav" preload="auto"></audio>
 <div class="main">
     <div class="center">
         <ul class="thunder">
@@ -115,5 +134,17 @@ Welcome
             </a>
         </h3>
     </div>
+    <svg fill="#576574" id="flash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path d="M302.7 64L143 288h95.8l-29.5 160L369 224h-95.8l29.5-160z"/>
+    </svg>
 </div>
+<script>
+    let audio = document.getElementById('thunder');
+    let flash = document.getElementById('flash');
+    flash.addEventListener('click', function () {
+        audio.play();
+        flash.classList.add('flash');
+        setTimeout(_ => flash.classList.remove('flash'), 3000);
+    });
+</script>
 @endcontent

@@ -59,7 +59,7 @@ class Router
             throw new MethodNotFoundException();
         }
 
-        if (is_string($action) and file_exists(view_path($action . '.php'))) {
+        if (is_string($action) and file_exists(view_path($action . '.flash.php'))) {
             return View::make($action)->render();
         }
 

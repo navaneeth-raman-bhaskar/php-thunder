@@ -11,15 +11,15 @@ class DB
 {
     private static ?PDO $instance = null;
 
-    private function __construct(array $config)
+    private function __construct(string $connection = null)
     {
         try {
             $defaultOptions = [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
                 PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                PDO::ATTR_ERRMODE => PDO_ERROR_LEVEL
             ];
-
+            $config = config('database.' . ($connection ?? config('database.default_connection')));
             static::$instance = new PDO(
                 $config['dns'],
                 $config['username'],
@@ -31,10 +31,10 @@ class DB
         }
     }
 
-    public static function instance(array $config): PDO
+    public static function instance(string $connection = null): PDO
     {
         if (!static::$instance) {
-            new static($config);
+            new static($connection);
         }
         return static::$instance;
     }

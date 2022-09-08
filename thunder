@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+define('APP_ROOT', __DIR__);
+
+/**@var $app Core\Application */
+$app = require_once APP_ROOT . '/bootstrap/app.php';
+
+
+/*$app->handle(
+    $router,
+    $_SERVER['argv']
+);*/
+
+dd('HI'=='hi');
+
+dd(array_shift($_SERVER['argv']));
+
+
+$app->run();
+
+exit();
+

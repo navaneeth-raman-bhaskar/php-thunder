@@ -13,7 +13,7 @@ class QueryBuilder
     private array $select = ['*'];
     private array $wheres = [];
     protected PDO $connection;
-    protected int $limit = 1000;
+    protected array $limit = [];
 
     public function __construct(private string $table, private string $class)
     {
@@ -37,10 +37,32 @@ class QueryBuilder
         return $this;
     }
 
+    public function limit($skip, $take): self
+    {
+        $this->limit = [$skip, $take];
+        return $this;
+    }
 
-    public function get()
+    public function get():array
     {
         return $this->resolveQuery()->fetchAll(PDO::FETCH_CLASS, $this->class);
+    }
+
+    public function find($id): ?Model
+    {
+        return $this->where('id', $id)->resolveQuery()->fetch(PDO::FETCH_CLASS, $this->class);
+    }
+
+    public function lazy(): Generator
+    {
+        return $this->fetchLazy($this->resolveQuery());
+    }
+
+    private function fetchLazy(PDOStatement $query): Generator
+    {
+        foreach ($query as $record) {
+            yield $record;
+        }
     }
 
     private function resolveQuery(): ?PDOStatement

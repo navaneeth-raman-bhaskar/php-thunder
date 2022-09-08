@@ -3,10 +3,15 @@
 
 use Core\Application;
 
+const PUBLIC_PATH = APP_ROOT . '/public';
 const STORAGE_PATH = APP_ROOT . '/storage';
 const VIEW_PATH = APP_ROOT . '/views';
 const UPLOAD_PATH = STORAGE_PATH . '/uploads';
 
+function public_path(string $path = ''): string
+{
+    return PUBLIC_PATH . '/' . $path;
+}
 function storage_path(string $path = ''): string
 {
     return STORAGE_PATH . '/' . $path;
@@ -56,4 +61,18 @@ function dd(...$params)
     // print_r(...$params);
     echo '</pre></div>';
     die();
+}
+
+function getDotArray(string $key, array $array, $default = null): mixed
+{
+    $split = explode('.', $key);
+    foreach ($split as $k) {
+        if (isset($array[$k])) {
+            $array = $array[$k];
+        } else {
+            $array = $default;
+            break;
+        }
+    }
+    return $array;
 }

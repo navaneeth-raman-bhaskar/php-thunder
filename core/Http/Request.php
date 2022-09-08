@@ -69,9 +69,9 @@ class Request
     public function method(): string
     {
         return strtolower(
-            $this->post('__method') ??
+            $this->server('REQUEST_METHOD') ??
             $this->server('X-HTTP-METHOD-OVERRIDE') ??
-            $this->server('REQUEST_METHOD')
+            $this->post('__method')
         );
     }
 

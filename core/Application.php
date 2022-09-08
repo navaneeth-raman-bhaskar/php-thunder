@@ -14,6 +14,7 @@ use Core\Http\Response;
 use Core\Providers\BindingServiceProvider;
 use Core\Support\View;
 use FilesystemIterator;
+use PDO;
 
 class Application
 {
@@ -80,15 +81,16 @@ class Application
         foreach (new FilesystemIterator($configPath) as $fileInfo) {
             /**@var $fileInfo \SplFileInfo */
             $config = require_once $fileInfo->getPathName();
-            $this->config = array_merge($this->config, $config);
+            $file = str_replace('.php','',$fileInfo->getFilename());
+            $this->config[$file] = $config;
         }
 
         return $this;
     }
 
-    public function getConfig(string $key)
+    public function getConfig(string $key):mixed
     {
-        return $this->config[$key] ?? null;
+        return getDotArray($key, $this->config);
     }
 
     public function getEnv(string $key): ?string
@@ -96,9 +98,9 @@ class Application
         return $this->env[$key] ?? null;
     }
 
-    public function db(): \PDO
+    public function db(): PDO
     {
-        return DB::instance(config(config('default_connection')));
+        return DB::instance();
     }
 
     public function run()
